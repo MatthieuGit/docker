@@ -37,4 +37,5 @@ docker container run -d --name nginx -p 80:80 nginx
 docker container ls
 ```
 6 - Utilisation des variables d'environnements
-l'option -e permet de variabiliser des variables d'environnement
+
+
