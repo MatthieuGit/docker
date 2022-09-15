@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+  website:
+    image: php:apache
+    container_name: website_c
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./data/website/:/var/www/html
+    environment:
+     - USERNAME=toto
+     - PASSWORD=python
+    user:  ${UID}  
+  api:
+    container_name: pozo 
+    volumes:
+      - data:/data
+      - ./student_age.json:/data/student_age.json
+    ports:
+      - 5000:5000
+    image: api:latest
+    
+volumes:
+   data:
