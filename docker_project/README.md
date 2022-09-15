@@ -172,6 +172,6 @@ curl -fs http://localhost:5000/v2/_catalog
 ```
 Result
 ```
-curl -fs http://localhost:5000/v2/_catalog
+{"repositories":["api"]}
 ```
 
