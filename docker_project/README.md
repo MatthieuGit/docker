@@ -132,6 +132,8 @@ volumes:
 ```
 run docker-compose up
 
+![My Image](docker-compose.png)
+
 
 ## Part 3: Docker Registry
 
