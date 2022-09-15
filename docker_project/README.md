@@ -100,3 +100,78 @@ curl -u toto:python -X GET http://192.168.4.40:5000/pozos/api/v1.0/get_student_a
 }
 ```
 
+## PART 2 : Infrastructure As Code
+```
+version: '3.1'
+services:
+  website:
+    image: php:apache
+    container_name: website_c
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./data/website/:/var/www/html
+    environment:
+     - USERNAME=toto
+     - PASSWORD=python
+    user:  ${UID}
+  api:
+    container_name: pozo
+    volumes:
+      - data:/data
+      - ./student_age.json:/data/student_age.json
+    ports:
+      - 5000:5000
+    image: api:latest
+
+volumes:
+   data:
+
+```
+run docker-compose up
+
+
+## Part 3: Docker Registry
+
+ 1. Create a network :
+
+```
+docker network create docker
+```
+
+ 2. Run registry container:
+
+```
+docker run -d -p 5000:5000 --restart always --net docker --name registry registry:2
+```
+
+ 3. Run registry UI container
+
+```
+docker run -d -p 8090:80 --net docker -e REGISTRY_URL=http://registry:5000 -e REGISTRY_TITLE=DockerProject --name frontend joxit/docker-registry-ui:latest
+```
+
+ 4. Tag your image
+
+```
+docker tag 18684f4ca1d2 localhost:5000/api:local
+```
+
+ 5. Push your image on registry
+
+```
+docker push localhost:5000/api:local 
+```
+
+ 6. Check registry
+```
+curl -fs http://localhost:5000/v2/_catalog
+
+```
+Result
+```
+curl -fs http://localhost:5000/v2/_catalog
+```
+
